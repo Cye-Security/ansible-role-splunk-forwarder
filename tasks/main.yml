@@ -57,7 +57,7 @@
 - name: Upload Splunk Systemd Script
   copy:
     src: splunk.service
-    dest: /etc/systemd/system/splunkd.service
+    dest: /etc/systemd/system/splunk.service
     owner: 0
     group: 0
     mode: 0755
