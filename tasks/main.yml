@@ -41,7 +41,7 @@
 
 - name: copy user seed
   template:
-    src: splunk_local_admin_password.j2
+    src: user-seed.conf.j2
     dest: /opt/splunkforwarder/etc/system/local/user-seed.conf
     backup: yes
   tags: config_copy
