@@ -44,12 +44,19 @@
     backup: yes
   tags: config_copy
 
+#Sets the local password
+- name: Remove passwd file
+  file:
+    path: /opt/splunkforwarder/etc/passwd
+    state: absent
+
 - name: copy user seed
   template:
     src: user-seed.conf.j2
     dest: /opt/splunkforwarder/etc/system/local/user-seed.conf
     backup: yes
   tags: config_copy
+#Sets the local password
 
 - name: "Enable boot"
   shell:
