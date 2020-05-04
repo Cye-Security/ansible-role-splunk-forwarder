@@ -17,6 +17,8 @@ splunk_rpm_checksum: "md5:0b5737d701eb34bf519aef905fb7b452"
 splunk_forwarder_indexer: "splunk-indexer:9997"
 splunk_forwarder_index: "default"
 splunk_forwarder_sourcetype: "nginx"
+splunk_local_admin_user: "admin"
+splunk_local_admin_password: "1q2w3e4r$R"
 
 splunk_forwarder_logs: |
   [monitor:///var/log/nginx/access.log*]

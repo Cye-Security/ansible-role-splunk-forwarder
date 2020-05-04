@@ -28,7 +28,7 @@
 - name: Copy inputs file
   template:
     src: inputs.conf.j2
-    dest: /opt/splunkforwarder/etc/system/local/inputs.conf
+    dest: /opt/splunkforwarder/etc/apps/search/local/inputs.conf
     backup: yes
   tags: config_copy
 
@@ -36,6 +36,13 @@
   template:
     src: outputs.conf.j2
     dest: /opt/splunkforwarder/etc/system/local/outputs.conf
+    backup: yes
+  tags: config_copy
+
+- name: copy user seed
+  template:
+    src: splunk_local_admin_password.j2
+    dest: /opt/splunkforwarder/etc/system/local/user-seed.conf
     backup: yes
   tags: config_copy
 
@@ -49,7 +56,7 @@
 
 - name: "start"
   shell:
-     "/opt/splunkforwarder/bin/splunk start --accept-license "
+     "/opt/splunkforwarder/bin/splunk start --accept-license --no-prompt --answer-yes"
   register: startcmd
   tags: startcmd
 
