@@ -40,18 +40,16 @@
   tags: config_copy
 
 - name: "Enable boot"
-  chdir: "/opt/splunkforwarder/bin"
   shell:
-     "./splunk disable boot-start"
+     "/opt/splunkforwarder/bin/splunk disable boot-start"
   register: enablecmd
   tags: enablecmd
 
 - debug: msg="{{enablecmd.stdout}}"
 
 - name: "start"
-  chdir: "/opt/splunkforwarder/bin"
   shell:
-     "./splunk start --accept-license "
+     "/opt/splunkforwarder/bin/splunk start --accept-license "
   register: startcmd
   tags: startcmd
 
