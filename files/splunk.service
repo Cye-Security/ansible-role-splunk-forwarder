@@ -4,6 +4,7 @@ Wants=network-online.target
 After=network-online.target
  
 [Service]
+StartLimitIntervalSec=1
 Restart=always
 Type=simple
 ExecStart=/opt/splunkforwarder/bin/splunk _internal_launch_under_systemd --accept-license --no-prompt --answer-yes
