@@ -25,6 +25,7 @@
   apt:
     deb: "/tmp/{{ splunk_forwarder_deb }}"
     state: present
+  notify: Enable Splunk Forwarder
   when: ansible_os_family == "Debian"
 
 - name: Download the Splunk package (CentOS)
