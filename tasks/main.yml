@@ -25,6 +25,11 @@
     state: present
   when: ansible_os_family == "RedHat"
 
+- name: Create APP dir
+  file:
+    path: /opt/splunkforwarder/etc/apps/search/local/
+    state: directory
+
 - name: Copy inputs file
   template:
     src: inputs.conf.j2
