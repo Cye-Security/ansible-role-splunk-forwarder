@@ -56,7 +56,7 @@
 
 - name: "start"
   shell:
-     "/opt/splunkforwarder/bin/splunk start --accept-license --no-prompt --answer-yes"
+     "/opt/splunkforwarder/bin/splunk restart --accept-license --no-prompt --answer-yes"
   register: startcmd
   tags: startcmd
 
