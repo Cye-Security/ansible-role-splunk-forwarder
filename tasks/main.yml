@@ -48,7 +48,7 @@
 
 - name: "Enable boot"
   shell:
-     "/opt/splunkforwarder/bin/splunk disable boot-start"
+     "/opt/splunkforwarder/bin/splunk enable boot-start"
   register: enablecmd
   tags: enablecmd
 
