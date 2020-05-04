@@ -48,7 +48,7 @@
 
 - debug: msg="{{enablecmd.stdout}}"
 
-- name: "Enable boot"
+- name: "start"
   chdir: "/opt/splunkforwarder/bin"
   shell:
      "./splunk start --accept-license "
