@@ -1,19 +1,4 @@
 ---
-- name: Create Splunk group
-  group:
-    name: "{{ splunk_forwarder_group }}"
-    gid: "{{ splunk_forwarder_gid }}"
-    state: present
-  tags: splunk_user
-
-- name: Create Splunk user
-  user:
-    name: "{{ splunk_forwarder_user }}"
-    group: "{{ splunk_forwarder_group }}"
-    uid: "{{ splunk_forwarder_uid }}"
-    state: present
-  tags: splunk_user
-
 - name: Download the Splunk package (Ubuntu)
   get_url:
     url: "{{ splunk_deb }}"
@@ -25,7 +10,6 @@
   apt:
     deb: "/tmp/{{ splunk_forwarder_deb }}"
     state: present
-  notify: Enable Splunk Forwarder
   when: ansible_os_family == "Debian"
 
 - name: Download the Splunk package (CentOS)
@@ -55,12 +39,20 @@
     backup: yes
   tags: config_copy
 
-- name: Upload Splunk Systemd Script
-  copy:
-    src: splunk.service
-    dest: /etc/systemd/system/splunk.service
-    owner: 0
-    group: 0
-    mode: 0755
-  notify: Enable Splunk Forwarder
-  when: ansible_service_mgr == 'systemd'
+- name: "Enable boot"
+  chdir: "/opt/splunkforwarder/bin"
+  shell:
+     "./splunk disable boot-start"
+  register: enablecmd
+  tags: enablecmd
+
+- debug: msg="{{enablecmd.stdout}}"
+
+- name: "Enable boot"
+  chdir: "/opt/splunkforwarder/bin"
+  shell:
+     "./splunk start --accept-license "
+  register: startcmd
+  tags: startcmd
+
+- debug: msg="{{startcmd.stdout}}"
