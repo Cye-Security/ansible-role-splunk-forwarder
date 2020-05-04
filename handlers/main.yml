@@ -1,5 +1,6 @@
 ---
 - name: Enable Splunk Forwarder
+  listen: "Upload Splunk Systemd Script"
   service:
     name: splunk
     enabled: yes
