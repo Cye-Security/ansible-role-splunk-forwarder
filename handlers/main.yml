@@ -2,6 +2,7 @@
 - name: Enable Splunk Forwarder
   listen: "Upload Splunk Systemd Script"
   service:
+    daemon_reload: True
     name: splunk
     enabled: yes
     state: started
