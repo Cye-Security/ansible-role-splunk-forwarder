@@ -58,14 +58,6 @@
   tags: config_copy
 #Sets the local password
 
-- name: "Enable boot"
-  shell:
-     "/opt/splunkforwarder/bin/splunk enable boot-start"
-  register: enablecmd
-  tags: enablecmd
-
-- debug: msg="{{enablecmd.stdout}}"
-
 - name: "start"
   shell:
      "/opt/splunkforwarder/bin/splunk restart --accept-license --no-prompt --answer-yes"
@@ -73,3 +65,11 @@
   tags: startcmd
 
 - debug: msg="{{startcmd.stdout}}"
+
+- name: "Enable boot"
+  shell:
+     "/opt/splunkforwarder/bin/splunk enable boot-start"
+  register: enablecmd
+  tags: enablecmd
+
+- debug: msg="{{enablecmd.stdout}}"
