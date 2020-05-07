@@ -1,19 +1,4 @@
 ---
-- name: Create Splunk group
-  group:
-    name: "{{ splunk_forwarder_group }}"
-    gid: "{{ splunk_forwarder_gid }}"
-    state: present
-  tags: splunk_user
-
-- name: Create Splunk user
-  user:
-    name: "{{ splunk_forwarder_user }}"
-    group: "{{ splunk_forwarder_group }}"
-    uid: "{{ splunk_forwarder_uid }}"
-    state: present
-  tags: splunk_user
-
 - name: Download the Splunk package (Ubuntu)
   get_url:
     url: "{{ splunk_deb }}"
@@ -25,7 +10,6 @@
   apt:
     deb: "/tmp/{{ splunk_forwarder_deb }}"
     state: present
-  notify: Enable Splunk Forwarder
   when: ansible_os_family == "Debian"
 
 - name: Download the Splunk package (CentOS)
@@ -41,10 +25,15 @@
     state: present
   when: ansible_os_family == "RedHat"
 
+- name: Create APP dir
+  file:
+    path: /opt/splunkforwarder/etc/apps/search/local/
+    state: directory
+
 - name: Copy inputs file
   template:
     src: inputs.conf.j2
-    dest: /opt/splunkforwarder/etc/system/local/inputs.conf
+    dest: /opt/splunkforwarder/etc/apps/search/local/inputs.conf
     backup: yes
   tags: config_copy
 
@@ -55,12 +44,32 @@
     backup: yes
   tags: config_copy
 
-- name: Upload Splunk Systemd Script
-  copy:
-    src: splunk.service
-    dest: /etc/systemd/system/splunk.service
-    owner: 0
-    group: 0
-    mode: 0755
-  notify: Enable Splunk Forwarder
-  when: ansible_service_mgr == 'systemd'
+#Sets the local password
+- name: Remove passwd file
+  file:
+    path: /opt/splunkforwarder/etc/passwd
+    state: absent
+
+- name: copy user seed
+  template:
+    src: user-seed.conf.j2
+    dest: /opt/splunkforwarder/etc/system/local/user-seed.conf
+    backup: yes
+  tags: config_copy
+#Sets the local password
+
+- name: "start"
+  shell:
+     "/opt/splunkforwarder/bin/splunk restart --accept-license --no-prompt --answer-yes"
+  register: startcmd
+  tags: startcmd
+
+- debug: msg="{{startcmd.stdout}}"
+
+- name: "Enable boot"
+  shell:
+     "/opt/splunkforwarder/bin/splunk enable boot-start"
+  register: enablecmd
+  tags: enablecmd
+
+- debug: msg="{{enablecmd.stdout}}"
