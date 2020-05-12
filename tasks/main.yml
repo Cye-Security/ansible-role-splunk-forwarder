@@ -11,6 +11,10 @@
     deb: "/tmp/{{ splunk_forwarder_deb }}"
     state: present
   when: ansible_os_family == "Debian"
+  register: deb_install
+  until: deb_install is not failed
+  retries: 5
+  delay: 30
 
 - name: Download the Splunk package (CentOS)
   get_url:
